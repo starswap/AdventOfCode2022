@@ -1,0 +1,25 @@
+$ cd /
+$ ls
+dir a
+dir b
+$ cd a
+$ ls
+10 hop.txt
+11 bop.txt
+$ cd /
+$ ls
+dir a
+dir b
+$ cd b
+$ ls
+12 sop.txt
+13 kop.txt
+$ cd ..
+$ ls
+dir a
+dir b
+$ cd a
+$ ls
+10 hop.txt
+11 bop.txt
+$ cd ..
