@@ -30,18 +30,6 @@ class Day7(private val lines: List<String>) {
         return minSuitableDir(toDelete, dirStructure)
     }
 
-    private fun minSuitableDir(spaceNeeded: Long, currentPointer: Directory): Long {
-        var result = INF
-        if (currentPointer.size > spaceNeeded) {// frees up enough space. If it doesn't then its children definitely won't
-            result = currentPointer.size  // we can take this directory
-            for ((_, child) in currentPointer.children) { // recurse to try and take child directories
-                if (child is Directory) // and not a file
-                    result = min(result, minSuitableDir(spaceNeeded, child))
-            }
-        }
-        return result
-    }
-
     private fun count(currentPointer: Directory): Long {
         // total space used up by directories in subtree rooted at currentPointer, with size less than threshold
         var cnt: Long = 0
@@ -54,6 +42,18 @@ class Day7(private val lines: List<String>) {
             }
         }
         return cnt
+    }
+
+    private fun minSuitableDir(spaceNeeded: Long, currentPointer: Directory): Long {
+        var result = INF
+        if (currentPointer.size > spaceNeeded) {// frees up enough space. If it doesn't then its children definitely won't
+            result = currentPointer.size  // we can take this directory
+            for ((_, child) in currentPointer.children) { // recurse to try and take child directories
+                if (child is Directory) // and not a file
+                    result = min(result, minSuitableDir(spaceNeeded, child))
+            }
+        }
+        return result
     }
 
     private fun build(currentPointer: Directory): Long {
