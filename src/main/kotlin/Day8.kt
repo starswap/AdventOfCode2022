@@ -13,83 +13,64 @@ class Day8(private val lines: List<String>) {
     }
 
     init {
-        determineVisibility()
-        calcScenicScores()
-    }
+        var highestTreeSoFar = 0
+        val lastN = Array<Int>(10) { 0 } // lastN[i] = last index we observed that had a tree of size i or larger
 
-    private fun determineVisibility() {
-        for (j in 0 until grid[0].size) { // for each column
-            var max = 0
-            for (i in 0 until grid.size) { // for each row
-                // top to bottom
-                if (grid[i][j] > max) {
+        // Top<->Bottom checks
+        for (j in grid[0].indices) { // For each column
+            // Top -> Bottom check
+            highestTreeSoFar = 0
+            lastN.fill(0)
+            for (i in grid.indices) {
+                // Compute visibility (part 1)
+                if (grid[i][j] > highestTreeSoFar) {
                     visible[i][j] = true
-                    max = grid[i][j]
+                    highestTreeSoFar = grid[i][j]
                 }
-            }
-            // bottom to top
-            max = grid[grid.size-1][j]
-            for (i in grid.size - 1 downTo 0) { // for each row
-                if (grid[i][j] > max) {
-                    visible[i][j] = true
-                    max = grid[i][j]
-                }
-            }
-        }
-
-        // side to side
-        for (i in 0 until grid.size) { // for each row
-            var max = grid[i][0]
-            for (j in 0 until grid[0].size) { // for each column
-                // left to right
-                if (grid[i][j] > max) {
-                    visible[i][j] = true
-                    max = grid[i][j]
-                }
-            }
-            // right to left
-            max = grid[i][grid[i].size-1]
-            for (j in grid[0].size - 1 downTo 0) { // for each column // right to left
-                if (grid[i][j] > max) {
-                    visible[i][j] = true
-                    max = grid[i][j]
-                }
-            }
-        }
-    }
-
-    private fun calcScenicScores() {
-        for (j in 0 until grid[0].size) { // for each column
-            val lastN = Array<Int>(10) { 0 } // last one that was bigger than n or the same size.
-
-            for (i in 0 until grid.size) { // for each row
-                // top to bottom
-                scenicScore[i][j] *= i - lastN[grid[i][j]]
-                for (k in 0 .. grid[i][j])
+                // Compute scenic scores (part 2)
+                scenicScore[i][j] *= (i - lastN[grid[i][j]])
+                for (k in 0 .. grid[i][j])    // last higher index we observed was i
                     lastN[k] = i
             }
-            // bottom to top
+
+            // Top <- Bottom check
             lastN.fill(grid.size - 1)
-            for (i in grid.size -1 downTo 0) { // for each row
-                // top to bottom
+            highestTreeSoFar = grid[grid.size-1][j]
+            for (i in grid.size - 1 downTo 0) { // for each row
+                if (grid[i][j] > highestTreeSoFar) {
+                    visible[i][j] = true
+                    highestTreeSoFar = grid[i][j]
+                }
                 scenicScore[i][j] *= lastN[grid[i][j]] - i
                 for (k in 0 .. grid[i][j])
                     lastN[k] = i
             }
         }
 
-        // side to side
-        for (i in 0 until grid.size) { // for each row
-            val lastN = Array<Int>(10) { 0 } // last one that was bigger than n or the same size.
-            for (j in 0 until grid[0].size) { // for each column
+        // Left<->Right checks
+        for (i in grid.indices) { // for each row
+            highestTreeSoFar = grid[i][0]
+            lastN.fill(0)
+
+            for (j in grid[0].indices) { // for each column
                 // left to right
+                if (grid[i][j] > highestTreeSoFar) {
+                    visible[i][j] = true
+                    highestTreeSoFar = grid[i][j]
+                }
                 scenicScore[i][j] *= j - lastN[grid[i][j]]
                 for (k in 0 .. grid[i][j])
                     lastN[k] = j
             }
+            // right to left
             lastN.fill(grid[0].size-1)
-            for (j in grid[0].size - 1 downTo 0) {// for each column
-                // right to left
+            highestTreeSoFar = grid[i][grid[i].size-1]
+
+            for (j in grid[0].size - 1 downTo 0) { // for each column // right to left
+                if (grid[i][j] > highestTreeSoFar) {
+                    visible[i][j] = true
+                    highestTreeSoFar = grid[i][j]
+                }
                 scenicScore[i][j] *= lastN[grid[i][j]] - j
                 for (k in 0 .. grid[i][j])
                     lastN[k] = j
