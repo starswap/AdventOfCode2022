@@ -47,7 +47,7 @@ object Day9 {
 
     fun process(lines: List<String>, snake: Snake): Int {
         val visited: MutableSet<Point> = mutableSetOf<Point>()
-        visited.add(snake.sec.last().copy())
+        visited.add(snake.sec.last().copy()) // Never hash a mutable data structure
         for (line in lines) {
             val (command, dist) = line.split(" ")
             repeat(dist.toInt()) {
