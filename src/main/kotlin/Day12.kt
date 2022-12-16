@@ -48,6 +48,9 @@ class Day12(val lines: List<String>) {
     }
 
     fun part2(): Int {
+        // We could make this slightly more efficient by caching the distance from a given point.
+        // An alternative is to do a BFS from E and just record the distance to each node
+        // But reusing part 1 saves coding time and a quick analysis reveals it should run in 1 sec.
         var best: Int = 1000000000
         for ((i, row) in lines.withIndex()) {
             for ((j, col) in row.withIndex()) {
