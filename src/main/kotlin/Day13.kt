@@ -88,7 +88,6 @@ class Day13(text: String) {
 }
 
 fun main() {
-    // Create a new instance for part1 and part2 since the state is mutated.
     val d13 = Day13(File("input/Day13.txt").readText())
     println("Part 1 ans: ${d13.part1()}")
     println("Part 2 ans: ${d13.part2()}")
