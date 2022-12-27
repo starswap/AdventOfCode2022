@@ -1,3 +1,8 @@
+// Possible improvements from Reddit
+// - Upper bound heuristic where you allow yourself to build several robots per turn if they all work, without requiring the total resources used to be less than what's available
+// - if you are skipping when you can build a robot, make sure not to then build that robot before building another one - i.e. choosing the next robot to build and fast forwarding until you can build it is more efficient
+// - "Note that we can do a bit better: For any resource R that's not geode: if you already have X robots creating resource R, a current stock of Y for that resource, T minutes left, and no robot requires more than Z of resource R to build, and X * T+Y >= T * Z, then you never need to build another robot mining R anymore."
+
 import java.io.File
 import kotlin.math.max
 
