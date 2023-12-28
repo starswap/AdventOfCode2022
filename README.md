@@ -1,3 +1,1 @@
-# Advent of Code Solutions for 2022
-
-- Hamish Starling
+# Advent of Code 2022 Solutions in Kotlin
